@@ -6,7 +6,7 @@
 * [Setup](#setup)
 
 ## General info
-This app obtains your latest played songs in Spotify and shows you insight about you Spoti habits. It takes user input for how many days ago wants to get played tracks. 
+This app obtains your latest played songs in Spotify and shows you insights about you Spotify listening habits. It takes user input for how many days ago wants to get played tracks. The output table includes song name, artist, time and date played. 
 	
 ## Technologies
 Project is created with:
