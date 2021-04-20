@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <link rel="stylesheet" href="/static/styles.css" type="text/css"></link>
+        <title>Recent Played Songs</title>
+    </head>
+    
+    <body>
+        <center>
+            <h1>Spotify Song Tracker</h1>
+            <form action="/getsongs" autocomplete="on" method="POST" enctype="multipart/form-data">
+                Code:<br> <input type="text" name="code"><br><br>
+                Username:<br> <input type="text" name="user_name"><br><br>
+                Days Ago:<br> <input type="number" name="days_ago"><br><br>
+                <button type="submit">SEND CODE</button>
+            </form>       
+        </center>
+    </body>
+</html>
