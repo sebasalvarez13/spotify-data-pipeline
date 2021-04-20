@@ -12,28 +12,15 @@ from datetime import timezone
 import sqlite3
 import sqlalchemy
 
-from secrets import user_id, client_id, client_secret, spotify_token
+from secrets import user_id, client_id, client_secret
 
 class CreatePlaylist:
-    def __init__(self, days_ago):
+    def __init__(self, days_ago, spotify_token):
         self.days_ago = days_ago
         self.user_id = user_id
         self.client_id = client_id
         self.client_secret = client_secret
         self.spotify_token = spotify_token
-
-    #def get_authorization(self):
-        #query = "https://accounts.spotify.com/api/token"
-        #scope = "user-read-recently-played"
-        #response = requests.post(
-        #    query,
-        #    {"grant_type": "client_credentials",
-        #    "client_id": self.client_id,
-        #    "client_secret": self.client_secret}
-        #    )
-
-        #response_json = response.json()
-        #return(response_json["access_token"])
 
     def set_time_period(self):
         today = datetime.datetime.now()
@@ -69,7 +56,7 @@ class CreatePlaylist:
 
         for song in data["items"]:
             spotify_time_str = song["played_at"]
-            #spotify returns time as a string in UTC. convert to local time and datetim object
+            #spotify returns time as a string in UTC. convert to local time and datetime object
             spotify_time_obj = datetime.datetime.strptime(spotify_time_str, "%Y-%m-%dT%H:%M:%S.%fZ")
             local_time_obj = spotify_time_obj.replace(tzinfo=timezone.utc).astimezone(tz=None)
 
@@ -92,7 +79,7 @@ class CreatePlaylist:
             }
 
         song_df = pd.DataFrame(song_dict, columns = ["song_name", "artist_name", "played_at", "date"])
-        print(song_df)
+        
         return(song_df)
 
     def delete_repeated_songs(self):
@@ -103,7 +90,7 @@ class CreatePlaylist:
                 songs_list.append(name)
 
         songs_names = pd.DataFrame(songs_list)
-        print(songs_names)
+        return(songs_names)
         
     def load_to_table(self):
         DATABASE_LOCATION = "sqlite:///my_played_tracks.sqlite"
