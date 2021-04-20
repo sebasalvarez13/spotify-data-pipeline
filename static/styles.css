@@ -1,0 +1,28 @@
+body{
+    background-color: honeydew;
+}
+h1{
+    color:rgb(96, 158, 60);
+    size:"4"; 
+    font-family:"Noto Sans JP";
+}
+
+h2{
+    color:rgb(96, 158, 60);
+    size:"4"; 
+    font-family:"Noto Sans JP";
+}
+input{
+    height:25px;
+    font-size:14pt;
+    color:rgb(128, 128, 128); 
+}
+button{
+    background: rgb(9, 54, 105);
+    height: 45px; 
+    width: 200px; 
+    color: white; 
+    size: 5; 
+    font:oblique;
+
+}
