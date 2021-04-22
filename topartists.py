@@ -4,12 +4,9 @@ import sqlite3
 import sqlalchemy
 import requests
 import pandas as pd
-from table_display import songdisplay
 
-def topartist():
+def topartists():
     DATABASE_LOCATION = "sqlite:///my_played_tracks.sqlite"
-    #song_df = self.get_spotify_songs()
-    #engine = sqlalchemy.create_engine(DATABASE_LOCATION)
     conn = sqlite3.connect('my_played_tracks.sqlite')
     cursor = conn.cursor()
 
@@ -31,3 +28,7 @@ def topartist():
     print("Close database successfully")
 
     return(results)
+
+if __name__ == "__main__":
+    artists = topartists()
+    print(artists["artist_name"])    
