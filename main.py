@@ -55,29 +55,32 @@ class CreatePlaylist:
         date_played = []
 
         for song in data["items"]:
+            #spotify returns time as a string in UTC.
             spotify_time_str = song["played_at"]
-            #spotify returns time as a string in UTC. convert to local time and datetime object
+            #convert time string to datetime object
             spotify_time_obj = datetime.datetime.strptime(spotify_time_str, "%Y-%m-%dT%H:%M:%S.%fZ")
+            #convert datetime object in UTC to local time
             local_time_obj = spotify_time_obj.replace(tzinfo=timezone.utc).astimezone(tz=None)
 
-            #time = re.search(".[\d]:.[\d]:.[\d]", local_time))
+            #strip datetime object in local time into time and date
             time = local_time_obj.strftime("%H:%M:%S")
             date = local_time_obj.strftime("%m-%d-%Y")
 
+            #append the values of the returned songs into their respective lists
             song_names.append(song["track"]["name"])
             artist_names.append(song["track"]["album"]["artists"][0]["name"])
             song_played_at.append(time)
             date_played.append(date)
-            #local_time_played.append(local_time_obj)
 
+        #create a dictionary with the lists 
         song_dict = {
             "song_name" : song_names,
             "artist_name": artist_names,
             "played_at": song_played_at,
             "date": date_played
-            #"local_time": local_time_played
-            }
+        }
 
+        #create a dataframe object using the previous dictionary as input parameter
         song_df = pd.DataFrame(song_dict, columns = ["song_name", "artist_name", "played_at", "date"])
         
         return(song_df)
