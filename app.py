@@ -15,10 +15,12 @@ table = 'my_songs_played'
 def home():
     return render_template('authorization.html')
 
+
 @app.route("/callback", methods=["GET", 'POST'])
 def callback():
     print(get_authorization())
     return render_template("callback.html") 
+
 
 @app.route("/getsongs", methods=["GET", 'POST'])
 def load_to_table():
@@ -26,18 +28,14 @@ def load_to_table():
     user_name = request.form["user_name"]
     days_ago = request.form["days_ago"]
 
-    #pass code to obtain toke
+    #pass code to obtain token
     response_json = get_token(code)
     token = response_json["access_token"]
-    print(token)
 
-    #pass days_ago to spotify_pipeline_aws script
+    #pass days_ago and token to obtain Spotify played songs
     cp = CreatePlaylist(int(days_ago), token)
     cp.load_to_table()
 
-    songdisplay(cp.get_spotify_songs())
-    
-    print("all modification done...")
     return render_template('output.html')
 
 
