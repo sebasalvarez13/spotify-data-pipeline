@@ -11,8 +11,10 @@ import datetime
 from datetime import timezone
 import sqlite3
 import sqlalchemy
+import pymysql
 
 from secrets import user_id, client_id, client_secret
+from rds_connection import rds_connect
 
 class CreatePlaylist:
     def __init__(self, days_ago, spotify_token):
@@ -99,7 +101,8 @@ class CreatePlaylist:
         DATABASE_LOCATION = "sqlite:///my_played_tracks.sqlite"
         song_df = self.get_spotify_songs()
         engine = sqlalchemy.create_engine(DATABASE_LOCATION)
-        conn = sqlite3.connect('my_played_tracks.sqlite')
+        #conn = sqlite3.connect('my_played_tracks.sqlite')
+        conn = rds_connect()
         cursor = conn.cursor()
 
         sql_query = """
