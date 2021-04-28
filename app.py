@@ -3,26 +3,25 @@
 from flask import Flask, render_template, request, redirect
 from main import CreatePlaylist
 from authorization import get_authorization, get_token
-from table_display import songdisplay
+from table_display import table_display
+from topartists import topartists
+from recent_songs import recentsongs
 
 app = Flask(__name__)
 
-output = {}
-table = 'my_songs_played'
 
-
-@app.route("/", methods=['GET', 'POST'])
+@app.route("/", methods=["GET", "POST"])
 def home():
-    return render_template('authorization.html')
+    return render_template("authorization.html")
 
 
-@app.route("/callback", methods=["GET", 'POST'])
+@app.route("/callback", methods=["GET", "POST"])
 def callback():
     print(get_authorization())
     return render_template("callback.html") 
 
 
-@app.route("/getsongs", methods=["GET", 'POST'])
+@app.route("/getsongs", methods=["GET", "POST"])
 def load_to_table():
     code = request.form["code"] 
     user_name = request.form["user_name"]
@@ -30,11 +29,17 @@ def load_to_table():
 
     #pass code to obtain token
     response_json = get_token(code)
+    print(response_json)
     token = response_json["access_token"]
 
     #pass days_ago and token to obtain Spotify played songs
     cp = CreatePlaylist(int(days_ago), token)
     cp.load_to_table()
+
+    #show recent songs and top artists tables
+    df1 = recentsongs()
+    df2 = topartists()
+    table_display(df1, df2)
 
     return render_template('output.html')
 
