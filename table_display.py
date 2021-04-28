@@ -5,7 +5,7 @@ from IPython.display import HTML
 from topartists import topartists
 from recent_songs import recentsongs
 
-def songdisplay(df1, df2):
+def table_display(df1, df2):
     """Takes a dataframe as parameter and displays content as a responsive table in html page"""
     
     df1 = df1
@@ -23,36 +23,8 @@ def songdisplay(df1, df2):
             <!DOCTYPE html>
             <html>
             <head>
-                <link rel="stylesheet" href="/static/tables.css" type="text/css"></link>
+                <link rel="stylesheet" href="/static/tables.css?v=1.1" type="text/css"></link>
                 <style>
-                .container1{
-                    display: inline-block;
-                    width: 800px;
-                    height: 700px;
-                    border: 1px solid black;
-                    overflow: auto;
-                }
-                .container2{
-                    display: inline-block;
-                    width: 300px;
-                    border: 1px solid black;
-                    overflow: auto;
-                }
-                table{
-                    border-collapse: collapse;
-                    width: 100%;
-                }
-
-                td{
-                    text-align: left;
-                    padding: 8px;
-                }
-
-                th{
-                    text-align: left;
-                    padding: 8px;
-                    height: 10px;
-                }
                     tr:nth-child(even) {background-color: #f2f2f2;}
                 </style>
             </head>
@@ -94,4 +66,4 @@ def songdisplay(df1, df2):
 if __name__ == "__main__":
     df1 = recentsongs()
     df2 = topartists()
-    songdisplay(df1, df2)
+    table_display(df1, df2)
