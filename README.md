@@ -14,7 +14,6 @@ Project is created with:
 * Python version: 3.9.1
 * HTML 
 * CSS
-* Javascript
 
 ## Setup
 Access the app URL in any browser and introduce the requested values to get Spotify data.
