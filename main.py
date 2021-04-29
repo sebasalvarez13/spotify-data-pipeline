@@ -101,8 +101,8 @@ class CreatePlaylist:
         DATABASE_LOCATION = "sqlite:///my_played_tracks.sqlite"
         song_df = self.get_spotify_songs()
         engine = sqlalchemy.create_engine(DATABASE_LOCATION)
-        #conn = sqlite3.connect('my_played_tracks.sqlite')
-        conn = rds_connect()
+        conn = sqlite3.connect('my_played_tracks.sqlite')
+        #conn = rds_connect()
         cursor = conn.cursor()
 
         sql_query = """
