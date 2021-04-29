@@ -17,8 +17,10 @@ def home():
 
 @app.route("/callback", methods=["GET", "POST"])
 def callback():
-    print(get_authorization())
-    return render_template("callback.html") 
+    url = get_authorization()
+    if request.method == "POST":
+        return redirect(url)
+    return render_template("callback.html")  
 
 
 @app.route("/getsongs", methods=["GET", "POST"])
