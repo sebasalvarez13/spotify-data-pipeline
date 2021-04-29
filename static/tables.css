@@ -1,0 +1,32 @@
+.container1{
+    display: inline-block;
+    width: 800px;
+    height: 700px;
+    border: 1px solid black;
+    overflow: auto;
+}
+
+.container2{
+    display: inline-block;
+    width: 300px;
+    position: absolute;
+    right: 100px;
+    border: 1px solid black;
+    overflow: auto;
+}
+
+table{
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td{
+    text-align: left;
+    padding: 8px;
+}
+
+th{
+    text-align: left;
+    padding: 8px;
+    height: 10px;
+}
