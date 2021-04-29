@@ -1,0 +1,10 @@
+img{
+    width: 300px; /* width of container */
+    height: 300px; /* height of container */
+    object-fit: cover;
+    display: inline-block;
+    position: absolute;
+    right: 100px;
+    top: 300px;
+    border: 2px solid black;
+}
