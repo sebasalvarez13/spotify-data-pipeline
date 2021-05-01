@@ -63,8 +63,15 @@ class CreatePlaylist:
         for song in data["items"]:
             #spotify returns time as a string in UTC.
             spotify_time_str = song["played_at"]
+            #filter string from  ".xxxZ" element
+            spotify_time_str_fltrd = re.search("[0-9]+\-[0-9]+\-[0-9]+T[0-9]+\:[0-9]+\:[0-9]+", spotify_time_str)
+            print(spotify_time_str_fltrd.group())
             #convert time string to datetime object
-            spotify_time_obj = datetime.datetime.strptime(spotify_time_str, "%Y-%m-%dT%H:%M:%S:%fZ")
+            try:
+              spotify_time_obj = datetime.datetime.strptime(spotify_time_str, "%Y-%m-%dT%H:%M:%S:%fZ")
+              break
+            except ValueError:
+              spotify_time_obj = datetime.datetime.strptime(spotify_time_str, "%Y-%m-%dT%H:%M:%S.%fZ")
             #convert datetime object in UTC to local time
             local_time_obj = spotify_time_obj.replace(tzinfo=timezone.utc).astimezone(tz=None)
 
