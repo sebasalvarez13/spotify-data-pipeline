@@ -12,9 +12,13 @@ from datetime import timezone
 import sqlite3
 import sqlalchemy
 import pymysql
+from pymysql import connections
+
+
 
 from secrets import user_id, client_id, client_secret
 from rds_connection import rds_connect
+from aws_config import *
 
 class CreatePlaylist:
     def __init__(self, days_ago, spotify_token):
@@ -60,7 +64,7 @@ class CreatePlaylist:
             #spotify returns time as a string in UTC.
             spotify_time_str = song["played_at"]
             #convert time string to datetime object
-            spotify_time_obj = datetime.datetime.strptime(spotify_time_str, "%Y-%m-%dT%H:%M:%S.%fZ")
+            spotify_time_obj = datetime.datetime.strptime(spotify_time_str, "%Y-%m-%dT%H:%M:%S:%fZ")
             #convert datetime object in UTC to local time
             local_time_obj = spotify_time_obj.replace(tzinfo=timezone.utc).astimezone(tz=None)
 
@@ -98,11 +102,17 @@ class CreatePlaylist:
         return(songs_names)
         
     def load_to_table(self):
-        DATABASE_LOCATION = "sqlite:///my_played_tracks.sqlite"
+        #DATABASE_LOCATION = "sqlite:///my_played_tracks.sqlite"
         song_df = self.get_spotify_songs()
-        engine = sqlalchemy.create_engine(DATABASE_LOCATION)
-        conn = sqlite3.connect('my_played_tracks.sqlite')
-        #conn = rds_connect()
+        engine = sqlalchemy.create_engine("mysql+pymysql://{}:{}@{}:3306/recent_played_songs".format(custom_user, custom_pass, custom_host))
+        #conn = sqlite3.connect('my_played_tracks.sqlite')
+        conn = connections.Connection(
+           host = custom_host,
+           port = 3306,
+           user = custom_user,
+           password = custom_pass,
+           db = custom_db
+        )
         cursor = conn.cursor()
 
         sql_query = """
@@ -110,18 +120,19 @@ class CreatePlaylist:
             song_name VARCHAR(200),
             artist_name VARCHAR(200),
             played_at VARCHAR(200),
-            date VARCHAR(200),
-            CONSTRAINT primary_key_constraint PRIMARY KEY (played_at)
+            date VARCHAR(200)
         )
         """
 
         cursor.execute(sql_query)
+        print(song_df)
+        print("this is the engine type: {}".format(type(engine)))
         print("Opened database successfully")
 
         try:
-            song_df.to_sql("my_played_tracks", engine, index=False, if_exists="replace")
-        except:
-            print("Data already exists in the database")
+            song_df.to_sql(name = "my_played_tracks", con = engine, index=False, if_exists="replace")
+        except Exception as e:
+            print(e)
 
         conn.close()
         print("Close database successfully")
