@@ -67,11 +67,8 @@ class CreatePlaylist:
             spotify_time_str_fltrd = re.search("[0-9]+\-[0-9]+\-[0-9]+T[0-9]+\:[0-9]+\:[0-9]+", spotify_time_str)
             print(spotify_time_str_fltrd.group())
             #convert time string to datetime object
-            try:
-                spotify_time_obj = datetime.datetime.strptime(spotify_time_str_fltrd.group(), "%Y-%m-%dT%H:%M:%S")
-                break
-            except ValueError as ve:
-                print(ve)
+            spotify_time_obj = datetime.datetime.strptime(spotify_time_str_fltrd.group(), "%Y-%m-%dT%H:%M:%S")
+
             #convert datetime object in UTC to local time
             local_time_obj = spotify_time_obj.replace(tzinfo=timezone.utc).astimezone(tz=None)
 
@@ -132,9 +129,8 @@ class CreatePlaylist:
         """
 
         cursor.execute(sql_query)
-        print(song_df)
-        print("this is the engine type: {}".format(type(engine)))
-        print("Opened database successfully")
+
+        print("Opened database sucessfully")
 
         try:
             song_df.to_sql(name = "my_played_tracks", con = engine, index=False, if_exists="replace")
