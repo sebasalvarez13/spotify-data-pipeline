@@ -68,10 +68,10 @@ class CreatePlaylist:
             print(spotify_time_str_fltrd.group())
             #convert time string to datetime object
             try:
-              spotify_time_obj = datetime.datetime.strptime(spotify_time_str, "%Y-%m-%dT%H:%M:%S:%fZ")
-              break
-            except ValueError:
-              spotify_time_obj = datetime.datetime.strptime(spotify_time_str, "%Y-%m-%dT%H:%M:%S.%fZ")
+                spotify_time_obj = datetime.datetime.strptime(spotify_time_str_fltrd.group(), "%Y-%m-%dT%H:%M:%S")
+                break
+            except ValueError as ve:
+                print(ve)
             #convert datetime object in UTC to local time
             local_time_obj = spotify_time_obj.replace(tzinfo=timezone.utc).astimezone(tz=None)
 
