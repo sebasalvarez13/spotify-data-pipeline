@@ -43,7 +43,7 @@ class CreatePlaylist:
         time = self.set_time_period()
         limit = 50 #max number of items that can be returned
         
-        query = "https://api.spotify.com/v1/me/player/recently-played?limit={}&after={}".format(limit, time)
+        query = "https://api.spotify.com/v1/me/player/recently-played?limit={}".format(limit)
 
         response = requests.get(
             query,
