@@ -28,7 +28,6 @@ def callback():
 def load_to_table():
     code = request.form["code"] 
     user_name = request.form["user_name"]
-    days_ago = request.form["days_ago"]
 
     #pass code to obtain token
     response_json = get_token(code)
@@ -36,7 +35,7 @@ def load_to_table():
     token = response_json["access_token"]
 
     #pass days_ago and token to obtain Spotify played songs
-    cp = CreatePlaylist(int(days_ago), token)
+    cp = CreatePlaylist(token)
     cp.load_to_table()
 
     #show recent songs and top artists tables
