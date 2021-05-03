@@ -21,8 +21,8 @@ from rds_connection import rds_connect
 from aws_config import *
 
 class CreatePlaylist:
-    def __init__(self, days_ago, spotify_token):
-        self.days_ago = days_ago
+    def __init__(self, spotify_token):
+        #self.days_ago = days_ago
         self.user_id = user_id
         self.client_id = client_id
         self.client_secret = client_secret
@@ -30,9 +30,9 @@ class CreatePlaylist:
 
     def set_time_period(self):
         today = datetime.datetime.now()
-        days_difference = datetime.timedelta(days = self.days_ago)
-        starting_day = today - days_difference
-        starting_day_unix_timestamp = int(starting_day.timestamp()) * 1000
+        #days_difference = datetime.timedelta(days = self.days_ago)
+        #starting_day = today - days_difference
+        starting_day_unix_timestamp = int(today.timestamp()) * 1000
 
         return(starting_day_unix_timestamp)
 
@@ -40,7 +40,6 @@ class CreatePlaylist:
         return utc_dt.replace(tzinfo=timezone.utc).astimezone(tz=None)
 
     def get_spotify_songs(self):
-        time = self.set_time_period()
         limit = 50 #max number of items that can be returned
         
         query = "https://api.spotify.com/v1/me/player/recently-played?limit={}".format(limit)
@@ -141,5 +140,5 @@ class CreatePlaylist:
         print("Close database successfully")
 
 if __name__ == "__main__":
-    cp = CreatePlaylist(1)
+    cp = CreatePlaylist()
     cp.load_to_table()
