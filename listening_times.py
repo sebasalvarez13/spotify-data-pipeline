@@ -1,24 +1,31 @@
 #!/usr/bin/env python3
 
-import sqlite3
 import sqlalchemy
 import requests
 import datetime
 import re
 import pandas as pd
 from main import CreatePlaylist
+import pymysql
+from pymysql import connections
+from aws_config import *
 
 def listen_times():
-    DATABASE_LOCATION = "sqlite:///my_played_tracks.sqlite"
-    conn = sqlite3.connect('my_played_tracks.sqlite')
+    conn = connections.Connection(
+        host = custom_host,
+        port = 3306,
+        user = custom_user,
+        password = custom_pass,
+        db = custom_db
+    )
     cursor = conn.cursor()
 
     sql_query = """
-    SELECT "song_name", "played_at",
-        COUNT("song_name") AS "value_occurence"
-        FROM "my_played_tracks"
-        GROUP BY "song_name"
-        ORDER BY "value_occurence" DESC
+    SELECT song_name, played_at,
+        COUNT(*) AS "occurence"
+        FROM my_played_tracks
+        GROUP BY song_name
+        ORDER BY "occurence" DESC
     """
     cursor.execute(sql_query)
     print("Results fetched")
@@ -30,9 +37,6 @@ def listen_times():
     print("Close database successfully")
 
     return(times)
-
-def string_to_datetime():
-    pass
 
 
 def filter_times():
