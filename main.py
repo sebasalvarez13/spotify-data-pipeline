@@ -21,12 +21,14 @@ from rds_connection import rds_connect
 from aws_config import *
 
 class CreatePlaylist:
-    def __init__(self, spotify_token):
+    def __init__(self, name, last_name, spotify_token):
         #self.days_ago = days_ago
         self.user_id = user_id
         self.client_id = client_id
         self.client_secret = client_secret
         self.spotify_token = spotify_token
+        self.name = name
+        self.last_name = last_name
 
     def set_time_period(self):
         today = datetime.datetime.now()
@@ -118,21 +120,16 @@ class CreatePlaylist:
         )
         cursor = conn.cursor()
 
-        sql_query = """
-        CREATE TABLE IF NOT EXISTS my_played_tracks(
-            song_name VARCHAR(200),
-            artist_name VARCHAR(200),
-            played_at VARCHAR(200),
-            date VARCHAR(200)
-        )
-        """
+        table_name = "{}{}_songs".format(self.name, self.last_name)
+
+        sql_query = "CREATE TABLE IF NOT EXISTS {} (song_name VARCHAR(200), artist_name VARCHAR(200), played_at VARCHAR(200), date VARCHAR(200))".format(table_name)
 
         cursor.execute(sql_query)
 
         print("Opened database sucessfully")
 
         try:
-            song_df.to_sql(name = "my_played_tracks", con = engine, index=False, if_exists="replace")
+            song_df.to_sql(name = table_name, con = engine, index=False, if_exists="replace")
         except Exception as e:
             print(e)
 
