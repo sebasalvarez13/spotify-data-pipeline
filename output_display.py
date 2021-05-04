@@ -57,7 +57,7 @@ def output_display(df1, df2):
             outputtable.write(
             """      
              <div class = img>
-                <img src="static/sebas_spotichart.png" alt="spotichart">
+                <img src="static/spotichart.png" alt="spotichart">
              <\div>
 
             </body>
