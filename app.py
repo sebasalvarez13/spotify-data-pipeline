@@ -26,7 +26,9 @@ def callback():
 
 @app.route("/getsongs", methods=["GET", "POST"])
 def load_to_table():
-    code = request.form["code"] 
+    code = request.form["code"]
+    name = request.form["name"]
+    last_name = request.form["last_name"] 
     user_name = request.form["user_name"]
 
     #pass code to obtain token
@@ -34,8 +36,8 @@ def load_to_table():
     print(response_json)
     token = response_json["access_token"]
 
-    #pass days_ago and token to obtain Spotify played songs
-    cp = CreatePlaylist(token)
+    #pass name, last name and token to obtain Spotify played songs
+    cp = CreatePlaylist(name, last_name, token)
     cp.load_to_table()
 
     #show recent songs and top artists tables
@@ -57,4 +59,5 @@ def about():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80, debug=True)
+    app.debug = True
+    app.run()
