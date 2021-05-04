@@ -19,7 +19,7 @@ def piechart(user_name):
     plt.title("Times of most activity", fontsize = 22)
     plt.legend(["5-9am", "9-5pm", "5-10pm", "10-5am"])
 
-    plt.savefig("static/{}_spotichart.png".format(user_name))
+    plt.savefig("static/spotichart.png")
 
 
 
