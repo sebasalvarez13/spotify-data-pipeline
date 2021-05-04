@@ -120,7 +120,9 @@ class CreatePlaylist:
         )
         cursor = conn.cursor()
 
-        table_name = "{}{}_songs".format(self.name, self.last_name)
+        table_name = "{}_{}_songs".format(self.name, self.last_name)
+        table_name = table_name.replace(" ", "")
+        print("table name is {}".format(table_name))
 
         sql_query = "CREATE TABLE IF NOT EXISTS {} (song_name VARCHAR(200), artist_name VARCHAR(200), played_at VARCHAR(200), date VARCHAR(200))".format(table_name)
 
