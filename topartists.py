@@ -9,7 +9,7 @@ from pymysql import connections
 
 from aws_config import *
 
-def topartists():
+def topartists(name, last_name):
     conn = connections.Connection(
         host = custom_host,
         port = 3306,
@@ -20,7 +20,9 @@ def topartists():
 
     cursor = conn.cursor()
 
-    sql_query = """SELECT artist_name, COUNT(*) AS 'occurence' FROM my_played_tracks GROUP BY artist_name ORDER BY occurence DESC LIMIT 5;"""
+    table_name = "{}_{}_songs".format(name, last_name)
+    table_name = table_name.replace(" ", "")
+    sql_query = "SELECT artist_name, COUNT(*) AS 'occurence' FROM {} GROUP BY artist_name ORDER BY occurence DESC LIMIT 5;".format(table_name)
 
     cursor.execute(sql_query)
 
