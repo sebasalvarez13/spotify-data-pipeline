@@ -41,8 +41,8 @@ def load_to_table():
     cp.load_to_table()
 
     #show recent songs and top artists tables
-    df1 = recentsongs()
-    df2 = topartists()
+    df1 = recentsongs(name, last_name)
+    df2 = topartists(name, last_name)
 
     #create pie chart
     piechart(user_name)
