@@ -8,7 +8,7 @@ import sqlalchemy
 from pymysql import connections
 from aws_config import *
 
-def recentsongs():
+def recentsongs(name, last_name):
     #DATABASE_LOCATION = "sqlite:///my_played_tracks.sqlite"
     #conn = sqlite3.connect('my_played_tracks.sqlite')
 
@@ -23,7 +23,9 @@ def recentsongs():
 
     cursor = conn.cursor()
 
-    sql_query = """SELECT * FROM my_played_tracks"""
+    table_name = "{}_{}_songs".format(name, last_name)
+    table_name = table_name.replace(" ", "")
+    sql_query = "SELECT * FROM {}".format(table_name)
 
     cursor.execute(sql_query)
     print("Results fetched")
