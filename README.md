@@ -1,4 +1,4 @@
-# Spotify Data Pipeline
+# Spoti-Sights (a Spotify data pipeline)
 
 ## Table of contents
 * [General info](#general-info)
@@ -6,7 +6,7 @@
 * [Setup](#setup)
 
 ## General info
-This app obtains your latest played songs in Spotify and shows you insights about you Spotify listening habits. It takes user input for how many days ago wants to get played tracks. The output table includes song name, artist, time and date played. 
+This web application obtains your latest played songs in Spotify and shows you insights about your Spotify listening habits.
 	
 ## Technologies
 Project is created with:
@@ -15,5 +15,7 @@ Project is created with:
 * HTML 
 * CSS
 
+Deployed in AWS
+
 ## Setup
-Access the app URL in any browser and introduce the requested values to get Spotify data.
+Visit www.spoti-sights.com to get your insights! Authorize the app to access your Spotify information. Copy the code returned in the url bar and go to www/spoti-sights.com/callback. Fill the form with the code, name, last name and user id. Submit the form and spoti-sights will return your listening history and top artists in a respective responsive table. Take a look at your listening activity throughout the day in a good looking pir chart. 
