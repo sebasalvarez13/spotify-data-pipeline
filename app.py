@@ -45,9 +45,9 @@ def load_to_table():
     df2 = topartists(name, last_name)
 
     #create pie chart
-    piechart(user_name)
+    piechart(name, last_name)
 
-    output_display(df1, df2)
+    output_display(df1, df2, name, last_name)
 
 
     return render_template('output.html')
