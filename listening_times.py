@@ -10,7 +10,7 @@ import pymysql
 from pymysql import connections
 from aws_config import *
 
-def listen_times():
+def listen_times(name, last_name):
     conn = connections.Connection(
         host = custom_host,
         port = 3306,
@@ -20,13 +20,11 @@ def listen_times():
     )
     cursor = conn.cursor()
 
-    sql_query = """
-    SELECT song_name, played_at,
-        COUNT(*) AS "occurence"
-        FROM my_played_tracks
-        GROUP BY song_name
-        ORDER BY "occurence" DESC
-    """
+    table_name = "{}_{}_songs".format(name, last_name)
+    table_name = table_name.replace(" ", "")
+
+    sql_query = "SELECT song_name, played_at, COUNT(*) AS 'occurence' FROM {} GROUP BY song_name ORDER BY 'occurence' DESC".format(table_name)
+
     cursor.execute(sql_query)
     print("Results fetched")
 
@@ -39,8 +37,8 @@ def listen_times():
     return(times)
 
 
-def filter_times():
-    times = listen_times()
+def filter_times(name, last_name):
+    times = listen_times(name, last_name)
     commute = range(5,9)
     work = range(9,17)
     unwine = range(17,22)
