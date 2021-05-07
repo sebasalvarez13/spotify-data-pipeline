@@ -4,8 +4,10 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
-
+import boto3
 from listening_times import filter_times
+from aws_config import *
+
 
 def piechart(name, last_name):
     songs_recurrence = filter_times(name, last_name)
@@ -18,10 +20,12 @@ def piechart(name, last_name):
     plt.title("Times of activity", fontsize = 22)
     plt.legend(["5-9am", "9-5pm", "5-10pm", "10-5am"])
 
-    chart_name = "{}_{}_chart".format(name, last_name)
+    chart_name = "{}_{}_chart.png".format(name, last_name)
     chart_name = chart_name.replace(" ", "")
-    plt.savefig("static/{}_{}chart.png".format(name, last_name))
 
+    plt.savefig("static/{}chart.png".format(chart_name))
+
+    #return(chart_name, fig)
 
 
 if __name__ == "__main__":
