@@ -5,7 +5,7 @@ from IPython.display import HTML
 from topartists import topartists
 from recent_songs import recentsongs
 
-def output_display(df1, df2):
+def output_display(df1, df2, name, last_name):
     """Takes a dataframe as parameter and displays content as a responsive table in html page"""
     
     df1 = df1
@@ -57,12 +57,12 @@ def output_display(df1, df2):
             outputtable.write(
             """      
              <div class = img>
-                <img src="static/spotichart.png" alt="spotichart">
+                <img src="static/{}_{}_chart.png" alt="spotichart">
              <\div>
 
             </body>
             </html>
-            """
+            """.format(name, last_name)
             )
             
     except IOError as e:
