@@ -17,7 +17,6 @@ from pymysql import connections
 
 
 from secrets import user_id, client_id, client_secret
-from rds_connection import rds_connect
 from aws_config import *
 
 class CreatePlaylist:
