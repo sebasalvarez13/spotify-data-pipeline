@@ -23,7 +23,7 @@ def piechart(name, last_name):
     chart_name = "{}_{}_chart.png".format(name, last_name)
     chart_name = chart_name.replace(" ", "")
 
-    plt.savefig("static/{}chart.png".format(chart_name))
+    plt.savefig("static/{}".format(chart_name))
 
     #return(chart_name, fig)
 
