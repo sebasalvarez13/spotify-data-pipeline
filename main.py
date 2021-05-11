@@ -12,10 +12,8 @@ from datetime import timezone
 import sqlite3
 import sqlalchemy
 import pymysql
+
 from pymysql import connections
-
-
-
 from secrets import user_id, client_id, client_secret
 from aws_config import *
 
@@ -29,20 +27,23 @@ class CreatePlaylist:
         self.name = name
         self.last_name = last_name
 
-    def set_time_period(self):
-        today = datetime.datetime.now()
-        #days_difference = datetime.timedelta(days = self.days_ago)
-        #starting_day = today - days_difference
-        starting_day_unix_timestamp = int(today.timestamp()) * 1000
 
-        return(starting_day_unix_timestamp)
+    def set_timestamp(self):
+        today = datetime.datetime.now()
+        today_unix_timestamp = int(today.timestamp()) * 1000
+        timestamp_str = datetime.datetime.strftime(today, "%m%d%YT%H%M")
+
+        return(timestamp_str)
+
 
     def utc_to_local(utc_dt):
-        return utc_dt.replace(tzinfo=timezone.utc).astimezone(tz=None)
+        local_dt = utc_dt.replace(tzinfo=timezone.utc).astimezone(tz=None)
+        retunr(local_dt)
+
 
     def get_spotify_songs(self):
         limit = 50 #max number of items that can be returned
-        
+
         query = "https://api.spotify.com/v1/me/player/recently-played?limit={}".format(limit)
 
         response = requests.get(
@@ -54,7 +55,7 @@ class CreatePlaylist:
         )
 
         data = response.json()
-        
+
         song_names = []
         artist_names = []
         song_played_at = []
@@ -65,13 +66,11 @@ class CreatePlaylist:
             spotify_time_str = song["played_at"]
             #filter string from  ".xxxZ" element
             spotify_time_str_fltrd = re.search("[0-9]+\-[0-9]+\-[0-9]+T[0-9]+\:[0-9]+\:[0-9]+", spotify_time_str)
-            print(spotify_time_str_fltrd.group())
-            #convert time string to datetime object
-            spotify_time_obj = datetime.datetime.strptime(spotify_time_str_fltrd.group(), "%Y-%m-%dT%H:%M:%S")
 
+            #convert time string to datetime object
+            spotify_time_obj = datetime.datetime.strptime(spotify_time_str_fltrd.group(), "%Y-%m-%dT%H:%M:%S") 
             #convert datetime object in UTC to local time
             local_time_obj = spotify_time_obj.replace(tzinfo=timezone.utc).astimezone(tz=None)
-
             #strip datetime object in local time into time and date
             time = local_time_obj.strftime("%H:%M:%S")
             date = local_time_obj.strftime("%m-%d-%Y")
@@ -92,8 +91,9 @@ class CreatePlaylist:
 
         #create a dataframe object using the previous dictionary as input parameter
         song_df = pd.DataFrame(song_dict, columns = ["song_name", "artist_name", "played_at", "date"])
-        
+
         return(song_df)
+
 
     def delete_repeated_songs(self):
         song_dict = self.get_spotify_songs()
@@ -104,12 +104,12 @@ class CreatePlaylist:
 
         songs_names = pd.DataFrame(songs_list)
         return(songs_names)
-        
+
+
     def load_to_table(self):
-        #DATABASE_LOCATION = "sqlite:///my_played_tracks.sqlite"
         song_df = self.get_spotify_songs()
         engine = sqlalchemy.create_engine("mysql+pymysql://{}:{}@{}:3306/recent_played_songs".format(custom_user, custom_pass, custom_host))
-        #conn = sqlite3.connect('my_played_tracks.sqlite')
+
         conn = connections.Connection(
            host = custom_host,
            port = 3306,
@@ -119,9 +119,8 @@ class CreatePlaylist:
         )
         cursor = conn.cursor()
 
-        table_name = "{}_{}_songs".format(self.name, self.last_name)
-        table_name = table_name.replace(" ", "")
-        print("table name is {}".format(table_name))
+        table_timestamp = selt.set_timestamp()
+        table_name = "{}_{}_songs_{}".format(self.name, self.last_name, table_timestamp)
 
         sql_query = "CREATE TABLE IF NOT EXISTS {} (song_name VARCHAR(200), artist_name VARCHAR(200), played_at VARCHAR(200), date VARCHAR(200))".format(table_name)
 
