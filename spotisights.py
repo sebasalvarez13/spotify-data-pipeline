@@ -10,6 +10,7 @@ from pie_chart import piechart
 import datetime
 import os
 
+
 app = Flask(__name__)
 
 
@@ -58,9 +59,11 @@ def load_to_table():
     df2 = topartists(table_name)
 
     #create pie chart
-    #piechart(name, last_name)
+    chart_name = "{}_{}_chart_{}".format(name, last_name, table_timestamp_str)
+    file_extension = "png"
+    piechart(table_name, chart_name, file_extension)
 
-    #output_display(df1, df2, name, last_name)
+    #display content to user
     output_display(df1, df2)
 
     return render_template('output.html')
