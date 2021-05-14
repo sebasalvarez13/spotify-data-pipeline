@@ -20,10 +20,10 @@ def topartists(table_name):
 
     cursor = conn.cursor()
 
-    sql_query = "SELECT artist_name, COUNT(*) AS 'occurence' FROM katie_zimmerman_songs_05132021T1512 GROUP BY artist_name ORDER BY occurence DESC LIMIT 5;"
+    sql_query = "SELECT artist_name, COUNT(*) AS 'occurence' FROM {} GROUP BY artist_name ORDER BY occurence DESC LIMIT 5;".format(table_name)
 
     cursor.execute(sql_query)
-    print("Results fetched")
+    print("Results fetched from table {}".format(table_name))
 
     results = pd.read_sql_query(sql_query, conn) 
 
@@ -32,6 +32,3 @@ def topartists(table_name):
 
     return(results)
 
-if __name__ == "__main__":
-    artists = topartists()
-    print(artists["artist_name"])
