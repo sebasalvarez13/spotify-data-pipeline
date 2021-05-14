@@ -7,6 +7,8 @@ from output_display import output_display
 from topartists import topartists
 from recent_songs import recentsongs
 from pie_chart import piechart
+import datetime
+import os
 
 app = Flask(__name__)
 
@@ -31,24 +33,35 @@ def load_to_table():
     last_name = request.form["last_name"] 
     user_name = request.form["user_name"]
 
+    #remove white spaces and set name and last name to lower case
+    name = (name.strip()).lower()
+    last_name = (last_name.strip()).lower()
+
+    #create table timestamp
+    today = datetime.datetime.now()
+    today_unix_timestamp = int(today.timestamp()) * 1000
+    table_timestamp_str = datetime.datetime.strftime(today, "%m%d%YT%H%M")
+
+    #create table name
+    table_name = "{}_{}_songs_{}".format(name, last_name, table_timestamp_str)
+
     #pass code to obtain token
     response_json = get_token(code)
-    print(response_json)
     token = response_json["access_token"]
 
     #pass name, last name and token to obtain Spotify played songs
-    cp = CreatePlaylist(name, last_name, token)
+    cp = CreatePlaylist(name, last_name, token, table_name)
     cp.load_to_table()
 
     #show recent songs and top artists tables
-    df1 = recentsongs(name, last_name)
-    df2 = topartists(name, last_name)
+    df1 = recentsongs(table_name)
+    df2 = topartists(table_name)
 
     #create pie chart
-    piechart(name, last_name)
+    #piechart(name, last_name)
 
-    output_display(df1, df2, name, last_name)
-
+    #output_display(df1, df2, name, last_name)
+    output_display(df1, df2)
 
     return render_template('output.html')
 
