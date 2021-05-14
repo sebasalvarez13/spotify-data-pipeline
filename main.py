@@ -18,7 +18,7 @@ from secrets import user_id, client_id, client_secret
 from aws_config import *
 
 class CreatePlaylist:
-    def __init__(self, name, last_name, spotify_token):
+    def __init__(self, name, last_name, spotify_token, table_name):
         #self.days_ago = days_ago
         self.user_id = user_id
         self.client_id = client_id
@@ -26,7 +26,7 @@ class CreatePlaylist:
         self.spotify_token = spotify_token
         self.name = name
         self.last_name = last_name
-
+        self.table_name = table_name
 
     def set_timestamp(self):
         today = datetime.datetime.now()
@@ -42,7 +42,8 @@ class CreatePlaylist:
 
 
     def get_spotify_songs(self):
-        limit = 50 #max number of items that can be returned
+        #max number of items that can be returned
+        limit = 50
 
         query = "https://api.spotify.com/v1/me/player/recently-played?limit={}".format(limit)
 
@@ -119,17 +120,14 @@ class CreatePlaylist:
         )
         cursor = conn.cursor()
 
-        table_timestamp = selt.set_timestamp()
-        table_name = "{}_{}_songs_{}".format(self.name, self.last_name, table_timestamp)
-
-        sql_query = "CREATE TABLE IF NOT EXISTS {} (song_name VARCHAR(200), artist_name VARCHAR(200), played_at VARCHAR(200), date VARCHAR(200))".format(table_name)
+        sql_query = "CREATE TABLE IF NOT EXISTS {} (song_name VARCHAR(200), artist_name VARCHAR(200), played_at VARCHAR(200), date VARCHAR(200))".format(self.table_name)
 
         cursor.execute(sql_query)
 
         print("Opened database sucessfully")
 
         try:
-            song_df.to_sql(name = table_name, con = engine, index=False, if_exists="replace")
+            song_df.to_sql(name = self.table_name, con = engine, index=False, if_exists="replace")
         except Exception as e:
             print(e)
 
