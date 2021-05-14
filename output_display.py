@@ -6,14 +6,15 @@ from topartists import topartists
 from recent_songs import recentsongs
 
 #def output_display(df1, df2, name, last_name):
-def output_display(df1, df2):
+def output_display(df1, df2, chart_name, file_extension):
     """Takes a dataframe as parameter and displays content as a responsive table in html page"""
 
     html1 = df1.to_html()
     html2 = df2.to_html()
 
+    chart_path = "/static/charts/{}.{}".format(chart_name, file_extension)
+    #chart_path = "/static/charts/sebastian_alvarez_chart_05142021T0845.png"
     output_file = "/var/www/html/spotiSights/templates/output.html"
-    #chart_name = "{}_{}_chart.png".format(name, last_name)
 
     str1 = """
             <!DOCTYPE html>
@@ -42,9 +43,11 @@ def output_display(df1, df2):
             outputtable.write("<div class = container2>\n".encode(encoding = "UTF-8",errors = "strict"))
             outputtable.write(html2.encode(encoding = "UTF-8",errors = "strict"))
             outputtable.write("</div>\n".encode(encoding = "UTF-8",errors = "strict"))
-            #outputtable.write("<div class = img>")
-            #outputtable.write("<img src='static/{}' alt='spotichart'>".format(table_name)
-            #outputtable.write("<\div>")
+
+            outputtable.write("<div class = img>".encode(encoding = "UTF-8",errors = "strict"))
+            outputtable.write(("<img src='{}' alt='spotichart'>".format(chart_path)).encode(encoding = "UTF-8",errors = "strict"))
+            outputtable.write("<\div>\n".encode(encoding = "UTF-8",errors = "strict"))
+
             outputtable.write("</body>\n</html>".encode(encoding = "UTF-8",errors = "strict"))
 
     except Exception as e:
