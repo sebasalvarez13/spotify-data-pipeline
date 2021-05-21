@@ -23,8 +23,10 @@ def output_display(df1, df2, chart_name, file_extension, name, last_name):
             <meta charset="utf-8"/>
                 <link rel="stylesheet" href="/static/tables.css?v=1.1" type="text/css"></link>
                 <link rel="stylesheet" href="/static/images.css?v=1.1" type="text/css"></link>
+
                 <style>
                     tr:nth-child(even) {background-color: #f2f2f2;}
+
                 </style>
             </head>
 
