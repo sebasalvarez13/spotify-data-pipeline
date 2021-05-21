@@ -5,8 +5,8 @@ from IPython.display import HTML
 from topartists import topartists
 from recent_songs import recentsongs
 
-#def output_display(df1, df2, name, last_name):
-def output_display(df1, df2, chart_name, file_extension):
+
+def output_display(df1, df2, chart_name, file_extension, name, last_name):
     """Takes a dataframe as parameter and displays content as a responsive table in html page"""
 
     html1 = df1.to_html()
@@ -14,7 +14,7 @@ def output_display(df1, df2, chart_name, file_extension):
 
     chart_path = "/static/charts/{}.{}".format(chart_name, file_extension)
     #chart_path = "/static/charts/sebastian_alvarez_chart_05142021T0845.png"
-    output_file = "/var/www/html/spotiSights/templates/output.html"
+    output_file = "/var/www/html/spotiSights/templates/{}_{}_output.html".format(name, last_name)
 
     str1 = """
             <!DOCTYPE html>
