@@ -64,9 +64,9 @@ def load_to_table():
     piechart(table_name, chart_name, file_extension)
 
     #display content to user
-    output_display(df1, df2, chart_name, file_extension)
+    output_display(df1, df2, chart_name, file_extension, name, last_name)
 
-    return render_template('output.html')
+    return render_template("{}_{}_output.html".format(name, last_name))
 
 
 @app.route("/about", methods=["GET"])
