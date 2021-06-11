@@ -21,6 +21,7 @@ def output_display(df1, df2, chart_name, file_extension, name, last_name):
             <html lang="es">
             <head>
             <meta charset="utf-8"/>
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
                 <link rel="stylesheet" href="/static/tables.css?v=1.1" type="text/css"></link>
                 <link rel="stylesheet" href="/static/images.css?v=1.1" type="text/css"></link>
 
